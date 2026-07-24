@@ -104,6 +104,28 @@ pipeline {
             }
 
         }
+        
+        stage('Desplegar aplicación') {
+
+            steps {
+
+                sh '''
+                    docker pull daniel2004cdbc/tareas-front:latest
+
+                    docker stop tareas-front || true
+
+                    docker rm tareas-front || true
+
+                    docker run -d \
+                        --name tareas-front \
+                        -p 80:80 \
+                        --restart unless-stopped \
+                        daniel2004cdbc/tareas-front:latest
+                '''
+
+            }
+
+        }
 
     }
 
@@ -113,7 +135,7 @@ pipeline {
 
             echo '==========================================='
             echo 'Pipeline ejecutado correctamente.'
-            echo 'Imagen publicada en Docker Hub.'
+            echo 'contenedor publicada en vps.'
             echo '==========================================='
 
         }
@@ -134,5 +156,5 @@ pipeline {
         }
 
     }
-
+    
 }
