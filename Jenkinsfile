@@ -118,7 +118,7 @@ pipeline {
 
                     docker run -d \
                         --name tareas-front \
-                        -p 80:80 \
+                        -p 8081:80 \
                         --restart unless-stopped \
                         daniel2004cdbc/tareas-front:latest
                 '''
