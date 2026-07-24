@@ -1,0 +1,65 @@
+<section class="tareas-page">
+  <div class="tareas-shell">
+
+    <div class="tareas-header">
+      <div>
+        <p class="tareas-badge">Gestión de tareas</p>
+        <h2>Listado de tareas</h2>
+        <p class="tareas-subtitle">Administra tus tareas pendientes y mantén el control de tu día.</p>
+      </div>
+
+      <a routerLink="/tareas/crear" class="btn-crear">+ Nueva tarea</a>
+    </div>
+
+    @if (cargando) {
+      <div class="estado-panel">
+        <p>Cargando tareas...</p>
+      </div>
+    } @else {
+      @if (tareas.length === 0) {
+        <div class="estado-panel">
+          <p>No hay tareas registradas.</p>
+          <span>Cuando agregues una tarea, aparecerá en este listado.</span>
+        </div>
+      } @else {
+        <div class="tabla-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Estado</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (tarea of tareas; track tarea.id) {
+                <tr>
+                  <td>{{ tarea.id }}</td>
+                  <td class="titulo-col">{{ tarea.titulo }}</td>
+                  <td>{{ tarea.descripcion }}</td>
+                  <td>
+                    @if (tarea.completada) {
+                      <span class="estado completada">Completada</span>
+                    } @else {
+                      <span class="estado pendiente">Pendiente</span>
+                    }
+                  </td>
+                  <td>{{ tarea.fechaCreacion | slice:0:10 }}</td>
+                  <td class="acciones">
+                    <button class="btn-editar" (click)="editarTarea(tarea.id)">Editar</button>
+                    @if (!tarea.completada) {
+                      <button class="btn-completar" (click)="completarTarea(tarea.id)">Completar</button>
+                    }
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    }
+  </div>
+</section>

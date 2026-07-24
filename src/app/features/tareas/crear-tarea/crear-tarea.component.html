@@ -1,0 +1,29 @@
+<section class="form-page">
+  <div class="form-card">
+    <div class="form-header">
+      <p class="form-badge">Nueva tarea</p>
+      <h2>Crear tarea</h2>
+      <p class="form-subtitle">Registra una nueva tarea pendiente dentro del sistema.</p>
+    </div>
+
+    <form class="form-contenido" [formGroup]="formTarea" (ngSubmit)="guardarTarea()">
+      <div class="campo">
+        <label for="titulo">Título</label>
+        <input id="titulo" type="text" formControlName="titulo" placeholder="Ingresa el título de la tarea">
+      </div>
+
+      <div class="campo">
+        <label for="descripcion">Descripción</label>
+        <input id="descripcion" type="text" formControlName="descripcion" placeholder="Ingresa una descripción breve">
+      </div>
+
+      <div class="acciones-form">
+        <button type="submit" class="btn-guardar" [disabled]="cargando">
+          {{ cargando ? 'Guardando...' : 'Guardar tarea' }}
+        </button>
+
+        <a routerLink="/tareas" class="btn-cancelar">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</section>

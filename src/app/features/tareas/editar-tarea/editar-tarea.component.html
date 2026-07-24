@@ -1,0 +1,29 @@
+<section class="form-page">
+  <div class="form-card">
+    <div class="form-header">
+      <p class="form-badge">Edición de tarea</p>
+      <h2>Editar tarea</h2>
+      <p class="form-subtitle">Actualiza la información de la tarea seleccionada.</p>
+    </div>
+
+    <form class="form-contenido" [formGroup]="formTarea" (ngSubmit)="actualizarTarea()">
+      <div class="campo">
+        <label for="titulo">Título</label>
+        <input id="titulo" type="text" formControlName="titulo" placeholder="Ingresa el título">
+      </div>
+
+      <div class="campo">
+        <label for="descripcion">Descripción</label>
+        <input id="descripcion" type="text" formControlName="descripcion" placeholder="Ingresa la descripción">
+      </div>
+
+      <div class="acciones-form">
+        <button type="submit" class="btn-guardar" [disabled]="cargando">
+          {{ cargando ? 'Actualizando...' : 'Actualizar tarea' }}
+        </button>
+
+        <a routerLink="/tareas" class="btn-cancelar">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</section>

@@ -1,0 +1,169 @@
+<section class="dashboard-page">
+  <div class="dashboard-shell">
+
+    <section class="hero-panel">
+      <div>
+        <p class="hero-badge">Panel de control</p>
+        <h1>Hola, {{ authService.getUsuarioLogin() }}</h1>
+        <p class="hero-text">
+          Visualiza el estado general de tus tareas, el avance semanal y tus pendientes más importantes.
+        </p>
+      </div>
+
+      <div class="hero-actions">
+        <a routerLink="/tareas" class="btn-primary">Ver tareas</a>
+        <a routerLink="/tareas/crear" class="btn-secondary">Nueva tarea</a>
+      </div>
+    </section>
+
+    <section class="stats-grid">
+      <article class="stat-card stat-blue">
+        <div>
+          <span class="stat-label">Tareas totales</span>
+          <h3>{{ resumen.total }}</h3>
+          <p>Registros generales del sistema</p>
+        </div>
+        <div class="stat-icon">📁</div>
+      </article>
+
+      <article class="stat-card stat-green">
+        <div>
+          <span class="stat-label">Completadas</span>
+          <h3>{{ resumen.completadas }}</h3>
+          <p>{{ porcentajeCompletadas }}% del total</p>
+        </div>
+        <div class="stat-icon">✅</div>
+      </article>
+
+      <article class="stat-card stat-yellow">
+        <div>
+          <span class="stat-label">Pendientes</span>
+          <h3>{{ resumen.pendientes }}</h3>
+          <p>{{ porcentajePendientes }}% aún por hacer</p>
+        </div>
+        <div class="stat-icon">⏳</div>
+      </article>
+
+      <article class="stat-card stat-purple">
+        <div>
+          <span class="stat-label">Productividad</span>
+          <h3>{{ resumen.productividad }}%</h3>
+          <p>Rendimiento semanal estimado</p>
+        </div>
+        <div class="stat-icon">📈</div>
+      </article>
+    </section>
+
+    <section class="dashboard-grid">
+      <article class="panel panel-large">
+        <div class="panel-header">
+          <div>
+            <p class="panel-kicker">Avance semanal</p>
+            <h2>Tareas completadas por día</h2>
+          </div>
+        </div>
+
+        <div class="bar-chart">
+          @for (item of barrasSemanales; track item.dia) {
+            <div class="bar-item">
+              <div class="bar-track">
+                <div
+                  class="bar-fill"
+                  [style.height.%]="(item.valor / maxBarValue) * 100">
+                </div>
+              </div>
+              <span class="bar-value">{{ item.valor }}</span>
+              <span class="bar-label">{{ item.dia }}</span>
+            </div>
+          }
+        </div>
+      </article>
+
+      <article class="panel panel-side">
+        <div class="panel-header">
+          <div>
+            <p class="panel-kicker">Distribución</p>
+            <h2>Estado de tareas</h2>
+          </div>
+        </div>
+
+        <div class="donut-wrap">
+          <div
+            class="donut-chart"
+            [style.--donut-angle]="chartDegrees">
+            <div class="donut-inner">
+              <strong>{{ porcentajeCompletadas }}%</strong>
+              <span>Completadas</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="donut-legend">
+          <div class="legend-item">
+            <span class="legend-dot dot-complete"></span>
+            <span>Completadas: {{ resumen.completadas }}</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot dot-pending"></span>
+            <span>Pendientes: {{ resumen.pendientes }}</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel panel-large">
+        <div class="panel-header">
+          <div>
+            <p class="panel-kicker">Actividad reciente</p>
+            <h2>Seguimiento de tareas</h2>
+          </div>
+        </div>
+
+        <div class="activity-list">
+          @for (item of actividadReciente; track item.titulo) {
+            <div class="activity-row">
+              <div class="activity-main">
+                <span class="activity-title">{{ item.titulo }}</span>
+              </div>
+              <span class="activity-badge" [ngClass]="item.clase">{{ item.estado }}</span>
+            </div>
+          }
+        </div>
+      </article>
+
+      <article class="panel panel-side">
+        <div class="panel-header">
+          <div>
+            <p class="panel-kicker">Calendario</p>
+            <h2>{{ calendario.mes }}</h2>
+          </div>
+        </div>
+
+        <div class="calendar">
+          <div class="calendar-days-head">
+            <span>Do</span>
+            <span>Lu</span>
+            <span>Ma</span>
+            <span>Mi</span>
+            <span>Ju</span>
+            <span>Vi</span>
+            <span>Sá</span>
+          </div>
+
+          @for (semana of calendario.dias; track $index) {
+            <div class="calendar-row">
+              @for (dia of semana; track $index) {
+                <span
+                  class="calendar-cell"
+                  [class.empty]="dia === ''"
+                  [class.today]="dia === calendario.hoy">
+                  {{ dia }}
+                </span>
+              }
+            </div>
+          }
+        </div>
+      </article>
+    </section>
+
+  </div>
+</section>

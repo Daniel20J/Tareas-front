@@ -1,0 +1,77 @@
+<section class="auth-page">
+  <div class="auth-shell">
+
+    <div class="auth-brand-panel">
+      <div class="brand-badge">TareasApp</div>
+
+      <h1>Organiza tu día con más claridad</h1>
+
+      <p class="brand-text">
+        Gestiona tareas, prioridades y pendientes desde una interfaz moderna,
+        simple y enfocada en productividad.
+      </p>
+
+      <div class="feature-list">
+        <div class="feature-item">
+          <span class="feature-icon">✓</span>
+          <span>Control de tareas pendientes</span>
+        </div>
+
+        <div class="feature-item">
+          <span class="feature-icon">✓</span>
+          <span>Seguimiento claro de actividades</span>
+        </div>
+
+        <div class="feature-item">
+          <span class="feature-icon">✓</span>
+          <span>Acceso rápido a tu panel principal</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="auth-card">
+      <div class="auth-header">
+        <p class="auth-badge">Acceso seguro</p>
+        <h2>Iniciar sesión</h2>
+        <p class="auth-subtitle">
+          Ingresa tus credenciales para continuar en TareasApp.
+        </p>
+      </div>
+
+      <form class="auth-form" [formGroup]="formLogin" (ngSubmit)="iniciarSesion()">
+
+        <div class="grupo">
+          <label for="usuarioLogin">Usuario</label>
+          <input
+            id="usuarioLogin"
+            type="text"
+            formControlName="usuarioLogin"
+            placeholder="Ingresa tu usuario" />
+
+          @if (formLogin.get('usuarioLogin')?.invalid && formLogin.get('usuarioLogin')?.touched) {
+            <small class="error-text">El usuario es obligatorio</small>
+          }
+        </div>
+
+        <div class="grupo">
+          <label for="password">Contraseña</label>
+          <input
+            id="password"
+            type="password"
+            formControlName="password"
+            placeholder="Ingresa tu contraseña" />
+
+          @if (formLogin.get('password')?.invalid && formLogin.get('password')?.touched) {
+            <small class="error-text">La contraseña es obligatoria</small>
+          }
+        </div>
+
+        <button type="submit" class="btn-login" [disabled]="cargando">
+          {{ cargando ? 'Ingresando...' : 'Ingresar' }}
+        </button>
+
+      </form>
+    </div>
+
+  </div>
+</section>
