@@ -45,6 +45,25 @@ pipeline {
 
         }
 
+        stage('Crear imagen Docker') {
+            steps {
+                sh '''
+                    docker build -t tareas-front:latest .
+                '''
+            }
+        }
+
+        stage('Verificar imagen Docker') {
+
+            steps {
+
+                sh '''
+                    docker images
+                '''
+            }
+
+        }
+
     }
 
 }
