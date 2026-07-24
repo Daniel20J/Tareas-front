@@ -62,6 +62,33 @@ pipeline {
                 '''
             }
 
+            stage('Login Docker Hub') {
+                steps {
+                    withCredentials([usernamePassword(
+                        credentialsId: 'dockerhub',
+                        usernameVariable: 'DOCKER_USER',
+                        passwordVariable: 'DOCKER_PASS'
+                    )]) {
+
+                        sh '''
+                            echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                        '''
+                    }
+                }
+            }
+
+            stage('Publicar imagen') {
+
+                steps {
+
+                    sh '''
+                        docker tag tareas-front:latest daniel2004cdbc/tareas-front:latest
+
+                        docker push daniel2004cdbc/tareas-front:latest
+                    '''
+
+                }
+            }
         }
 
     }
