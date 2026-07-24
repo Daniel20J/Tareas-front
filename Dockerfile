@@ -1,23 +1,21 @@
-# Build stage
-FROM node:20-alpine AS build
+# Etapa 1: Compilar Angular
+FROM node:22-alpine AS build
+
 WORKDIR /app
 
-# Install dependencies
 COPY package*.json ./
+
 RUN npm install
 
-# Build the Angular app
 COPY . .
-RUN npm run build -- --configuration production
 
-# Production stage
-FROM nginx:stable-alpine
+RUN npm run build
 
-# Copy built output to nginx html folder
-COPY --from=build /app/dist/tareas-front /usr/share/nginx/html
+# Etapa 2: Publicar con Nginx
+FROM nginx:alpine
 
-# Use a custom nginx config to support Angular SPA routing
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/dist/tareas-front/browser /usr/share/nginx/html
 
 EXPOSE 80
+
 CMD ["nginx", "-g", "daemon off;"]
