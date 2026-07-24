@@ -46,11 +46,15 @@ pipeline {
         }
 
         stage('Crear imagen Docker') {
+
             steps {
+
                 sh '''
                     docker build -t tareas-front:latest .
                 '''
+
             }
+
         }
 
         stage('Verificar imagen Docker') {
@@ -60,35 +64,73 @@ pipeline {
                 sh '''
                     docker images
                 '''
+
             }
 
-            stage('Login Docker Hub') {
-                steps {
-                    withCredentials([usernamePassword(
-                        credentialsId: 'dockerhub',
-                        usernameVariable: 'DOCKER_USER',
-                        passwordVariable: 'DOCKER_PASS'
-                    )]) {
+        }
 
-                        sh '''
-                            echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                        '''
-                    }
-                }
-            }
+        stage('Login Docker Hub') {
 
-            stage('Publicar imagen') {
+            steps {
 
-                steps {
+                withCredentials([usernamePassword(
+                    credentialsId: '123456789',   // <-- Cambia este valor si tu ID es diferente
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
 
                     sh '''
-                        docker tag tareas-front:latest daniel2004cdbc/tareas-front:latest
-
-                        docker push daniel2004cdbc/tareas-front:latest
+                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
                     '''
 
                 }
+
             }
+
+        }
+
+        stage('Publicar imagen Docker Hub') {
+
+            steps {
+
+                sh '''
+                    docker tag tareas-front:latest daniel2004cdbc/tareas-front:latest
+                    docker tag tareas-front:latest daniel2004cdbc/tareas-front:${BUILD_NUMBER}
+
+                    docker push daniel2004cdbc/tareas-front:latest
+                    docker push daniel2004cdbc/tareas-front:${BUILD_NUMBER}
+                '''
+
+            }
+
+        }
+
+    }
+
+    post {
+
+        success {
+
+            echo '==========================================='
+            echo 'Pipeline ejecutado correctamente.'
+            echo 'Imagen publicada en Docker Hub.'
+            echo '==========================================='
+
+        }
+
+        failure {
+
+            echo '==========================================='
+            echo 'El pipeline falló.'
+            echo 'Revisa la consola de Jenkins.'
+            echo '==========================================='
+
+        }
+
+        always {
+
+            sh 'docker logout || true'
+
         }
 
     }
