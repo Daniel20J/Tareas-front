@@ -12,7 +12,7 @@ import { LoginRequest } from '../../shared/models/login-request.model';
 })
 export class AuthService {
 
-  private readonly apiUrl = 'https://localhost:7004/api';
+  private readonly apiUrl = 'https://tareasbackend-iv56.onrender.com/api';
   private readonly platformId = inject(PLATFORM_ID);
 
   constructor(private http: HttpClient) {}

@@ -11,7 +11,7 @@ import { TareaUpdate } from '../../shared/models/tarea-update.model';
 })
 export class TareaService {
 
-  private readonly apiUrl = 'https://localhost:7004/api';
+  private readonly apiUrl = 'https://tareasbackend-iv56.onrender.com/api';
 
   constructor(private http: HttpClient) { }
 
